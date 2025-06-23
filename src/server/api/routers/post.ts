@@ -1,10 +1,10 @@
-import { z } from "zod";
-
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+
+import { z } from "zod";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
@@ -37,5 +37,15 @@ export const postRouter = createTRPCRouter({
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
+  }),
+
+  getMemoryNode: protectedProcedure.query(async ({ ctx }) => {
+    // probably a good option: http://prisma.io/docs/orm/prisma-client/queries/full-text-search
+    const post = await ctx.db.post.findMany({
+      orderBy: { createdAt: "desc" },
+      where: { createdBy: { id: ctx.session.user.id } },
+    });
+
+    return post ?? null;
   }),
 });
