@@ -2,7 +2,6 @@ import { HydrateClient, api } from "~/trpc/server";
 
 import AvatarDropdown from "./_components/AvatarDropdown";
 import Link from "next/link";
-import { Menu } from "@base-ui-components/react/menu";
 import { auth } from "~/server/auth";
 
 export default async function Home() {
@@ -20,13 +19,11 @@ export default async function Home() {
     <HydrateClient>
       {session ? (
         <main className="flex min-h-screen justify-between bg-stone-800 p-3 text-stone-100">
-          <Menu.Root>
-            <h1 className="text-3xl">Remembrall</h1>
+          <h1 className="text-3xl">Remembrall</h1>
 
-            <div className="flex gap-3">
-              <AvatarDropdown />
-            </div>
-          </Menu.Root>
+          <div className="flex gap-3">
+            <AvatarDropdown />
+          </div>
         </main>
       ) : (
         <main className="flex min-h-screen flex-col items-center justify-center bg-stone-800 text-white">

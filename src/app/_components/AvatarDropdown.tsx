@@ -39,7 +39,7 @@ export default async function AvatarDropdown() {
   };
 
   return (
-    <>
+    <Menu.Root>
       <Menu.Trigger className="h-fit w-fit cursor-pointer">
         {userImage()}
       </Menu.Trigger>
@@ -52,6 +52,6 @@ export default async function AvatarDropdown() {
           </Menu.Popup>
         </Menu.Positioner>
       </Menu.Portal>
-    </>
+    </Menu.Root>
   );
 }
