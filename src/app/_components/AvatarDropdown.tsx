@@ -9,7 +9,6 @@ export default async function AvatarDropdown() {
 
   if (session?.user) {
     void api.post.getLatest.prefetch();
-    console.log(session.user);
   }
 
   const userImage = () => {

@@ -10,3 +10,9 @@
 .root {
   isolation: isolate;
 }
+
+@layer base {
+  *:focus {
+    @apply ring outline-offset-3 outline-white;
+  }
+}
