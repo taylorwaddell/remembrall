@@ -6,13 +6,8 @@ import { auth } from "~/server/auth";
 
 export default async function Home() {
   const session = await auth();
-  // const hello = await api.post.hello({
-  //   text: !session ? "there" : (session.user.name ?? "there"),
-  // });
-
   if (session?.user) {
     void api.post.getLatest.prefetch();
-    console.log(session.user);
   }
 
   return (
@@ -27,7 +22,7 @@ export default async function Home() {
         </>
       ) : (
         <main className="flex min-h-screen flex-col items-center justify-center bg-stone-800 text-white">
-          <h1 className="text-3xl">Remembrall</h1>
+          <h1 className="mb-4 text-3xl">Remembrall</h1>
           <Link
             href={"/api/auth/signin"}
             className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
