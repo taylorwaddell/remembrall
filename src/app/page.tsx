@@ -2,6 +2,7 @@ import { HydrateClient, api } from "~/trpc/server";
 
 import { Avatar } from "@base-ui-components/react/avatar";
 import Link from "next/link";
+import { Menu } from "@base-ui-components/react/menu";
 import { auth } from "~/server/auth";
 
 export default async function Home() {
@@ -17,18 +18,14 @@ export default async function Home() {
 
   const userImage = () => {
     const user = session?.user;
+    const fallbackClasses = "block h-10 w-10 rounded-full bg-stone-900";
     if (user) {
       const firstLetter = user.name ? user.name[0] : "";
       if (user.image) {
         return (
-          <Avatar.Root className="">
-            <Avatar.Image
-              src={user.image}
-              width="48"
-              height="48"
-              className="rounded-full"
-            />
-            <Avatar.Fallback className="rounded-full">
+          <Avatar.Root className="block h-10 w-10">
+            <Avatar.Image src={user.image} className="rounded-full" />
+            <Avatar.Fallback className={fallbackClasses}>
               {firstLetter}
             </Avatar.Fallback>
           </Avatar.Root>
@@ -36,7 +33,7 @@ export default async function Home() {
       } else {
         return (
           <Avatar.Root className="">
-            <Avatar.Fallback className="rounded-full">
+            <Avatar.Fallback className={fallbackClasses}>
               {firstLetter}
             </Avatar.Fallback>
           </Avatar.Root>
@@ -48,18 +45,23 @@ export default async function Home() {
   return (
     <HydrateClient>
       {session ? (
-        <main className="flex min-h-screen justify-between bg-stone-800 p-3 text-white">
-          <h1 className="text-3xl">Remembrall</h1>
+        <main className="flex min-h-screen justify-between bg-stone-800 p-3 text-stone-100">
+          <Menu.Root>
+            <h1 className="text-3xl">Remembrall</h1>
 
-          <div className="flex gap-3">
-            {userImage()}
-            <Link
-              href={"/api/auth/signout"}
-              className="h-fit rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-            >
-              {"Sign out"}
-            </Link>
-          </div>
+            <div className="flex gap-3">
+              <Menu.Trigger className="h-fit w-fit">{userImage()}</Menu.Trigger>
+              <Menu.Portal>
+                <Menu.Positioner sideOffset={8}>
+                  <Menu.Popup className="rounded-sm bg-stone-900 px-2 py-2 text-stone-100">
+                    <Menu.Item className="rounded-md px-6 py-1 hover:bg-stone-950">
+                      <Link href={"/api/auth/signout"}>{"Sign out"}</Link>
+                    </Menu.Item>
+                  </Menu.Popup>
+                </Menu.Positioner>
+              </Menu.Portal>
+            </div>
+          </Menu.Root>
         </main>
       ) : (
         <main className="flex min-h-screen flex-col items-center justify-center bg-stone-800 text-white">
