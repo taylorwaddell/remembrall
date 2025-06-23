@@ -39,7 +39,7 @@ export const postRouter = createTRPCRouter({
     return "you can now see this secret message!";
   }),
 
-  getMemoryNode: protectedProcedure.query(async ({ ctx }) => {
+  getMemoryNodes: protectedProcedure.query(async ({ ctx }) => {
     // probably a good option: http://prisma.io/docs/orm/prisma-client/queries/full-text-search
     const post = await ctx.db.post.findMany({
       orderBy: { createdAt: "desc" },
