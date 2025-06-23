@@ -1,6 +1,6 @@
 import { HydrateClient, api } from "~/trpc/server";
 
-import { Avatar } from "@base-ui-components/react/avatar";
+import AvatarDropdown from "./_components/AvatarDropdown";
 import Link from "next/link";
 import { Menu } from "@base-ui-components/react/menu";
 import { auth } from "~/server/auth";
@@ -16,32 +16,6 @@ export default async function Home() {
     console.log(session.user);
   }
 
-  const userImage = () => {
-    const user = session?.user;
-    const fallbackClasses = "block h-10 w-10 rounded-full bg-stone-900";
-    if (user) {
-      const firstLetter = user.name ? user.name[0] : "";
-      if (user.image) {
-        return (
-          <Avatar.Root className="block h-10 w-10">
-            <Avatar.Image src={user.image} className="rounded-full" />
-            <Avatar.Fallback className={fallbackClasses}>
-              {firstLetter}
-            </Avatar.Fallback>
-          </Avatar.Root>
-        );
-      } else {
-        return (
-          <Avatar.Root className="">
-            <Avatar.Fallback className={fallbackClasses}>
-              {firstLetter}
-            </Avatar.Fallback>
-          </Avatar.Root>
-        );
-      }
-    }
-  };
-
   return (
     <HydrateClient>
       {session ? (
@@ -50,16 +24,7 @@ export default async function Home() {
             <h1 className="text-3xl">Remembrall</h1>
 
             <div className="flex gap-3">
-              <Menu.Trigger className="h-fit w-fit">{userImage()}</Menu.Trigger>
-              <Menu.Portal>
-                <Menu.Positioner sideOffset={8}>
-                  <Menu.Popup className="rounded-sm bg-stone-900 px-2 py-2 text-stone-100">
-                    <Menu.Item className="rounded-md px-6 py-1 hover:bg-stone-950">
-                      <Link href={"/api/auth/signout"}>{"Sign out"}</Link>
-                    </Menu.Item>
-                  </Menu.Popup>
-                </Menu.Positioner>
-              </Menu.Portal>
+              <AvatarDropdown />
             </div>
           </Menu.Root>
         </main>
