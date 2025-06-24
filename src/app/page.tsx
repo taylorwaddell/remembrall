@@ -2,6 +2,7 @@ import { HydrateClient, api } from "~/trpc/server";
 
 import AvatarDropdown from "./_components/AvatarDropdown";
 import Link from "next/link";
+import SearchCreate from "./_components/SearchCreate";
 import { auth } from "~/server/auth";
 
 export default async function Home() {
@@ -18,7 +19,9 @@ export default async function Home() {
             <h1 className="text-3xl">Remembrall</h1>
             <AvatarDropdown />
           </nav>
-          <main className="flex min-h-screen justify-between bg-stone-800 p-3 text-stone-100"></main>
+          <main className="flex min-h-screen items-center justify-center bg-stone-800 p-3 text-stone-100">
+            <SearchCreate />
+          </main>
         </>
       ) : (
         <main className="flex min-h-screen flex-col items-center justify-center bg-stone-800 text-white">
