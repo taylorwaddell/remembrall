@@ -1,15 +1,10 @@
 import { Avatar } from "@base-ui-components/react/avatar";
 import Link from "next/link";
 import { Menu } from "@base-ui-components/react/menu";
-import { api } from "~/trpc/server";
 import { auth } from "~/server/auth";
 
 export default async function AvatarDropdown() {
   const session = await auth();
-
-  if (session?.user) {
-    void api.post.getLatest.prefetch();
-  }
 
   const userImage = () => {
     const user = session?.user;
