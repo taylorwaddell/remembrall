@@ -18,9 +18,11 @@ export default function SearchCreate() {
     }[]
   >([]);
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
-    onSuccess: () => {
-      toast.success("Memory created.");
-      setUserText("");
+    onSuccess: (result) => {
+      if (result.ok) {
+        toast.success(`Memory created`, { description: result.value.text });
+        setUserText("");
+      }
     },
   });
   const { refetch, isFetching } =
