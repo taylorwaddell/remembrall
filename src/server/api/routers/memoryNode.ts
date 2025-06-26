@@ -63,12 +63,14 @@ export const memoryNodeRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       // probably a good option: http://prisma.io/docs/orm/prisma-client/queries/full-text-search
       const nodes = ctx.db.memoryNode.findMany({
-        select: { text: true },
         where: {
-          text: { contains: input.query },
-          OR: [{ tags: { some: { text: { contains: input.query } } } }],
+          OR: [
+            { tags: { some: { text: { contains: input.query } } } },
+            { text: { contains: input.query } },
+          ],
           userId: { equals: ctx.session.user.id },
         },
+        select: { text: true },
         take: 5,
       });
       return nodes;
