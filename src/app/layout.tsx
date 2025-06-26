@@ -4,6 +4,7 @@ import { type Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Remembrall",
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistMono.variable}`}>
       <body className="root">
+        <Toaster />
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>

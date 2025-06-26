@@ -5,6 +5,7 @@ import { ArrowRight, Loader, Pencil, Search } from "lucide-react";
 import { Input } from "@base-ui-components/react/input";
 import { Toggle } from "@base-ui-components/react/toggle";
 import { ToggleGroup } from "@base-ui-components/react/toggle-group";
+import { toast } from "sonner";
 import { api } from "~/trpc/react";
 import { useState, type FormEvent } from "react";
 
@@ -17,7 +18,10 @@ export default function SearchCreate() {
     }[]
   >([]);
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
-    onSuccess: () => console.log("yeah bro"),
+    onSuccess: () => {
+      toast.success("Memory created.");
+      setUserText("");
+    },
   });
   const { refetch, isFetching } =
     api.memoryNode.getMemoryNodesByUserId.useQuery(
