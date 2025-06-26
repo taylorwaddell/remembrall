@@ -59,6 +59,7 @@ export const memoryNodeRouter = createTRPCRouter({
         select: { text: true },
         where: {
           text: { contains: input.query },
+          OR: [{ tags: { some: { text: { contains: input.query } } } }],
           userId: { equals: ctx.session.user.id },
         },
         take: 5,
