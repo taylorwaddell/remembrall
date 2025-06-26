@@ -36,12 +36,17 @@ export const memoryNodeRouter = createTRPCRouter({
           format: zodTextFormat(AITagFormat, "event"),
         },
       });
-      console.log(aiResponse);
+      const output = aiResponse.output_parsed;
       const node = await ctx.db.memoryNode.create({
         data: {
           text: input.userText,
           userId: ctx.session.user.id,
           created: new Date(),
+          tags: {
+            create: output?.tags.map((tag) => ({
+              text: tag,
+            })),
+          },
         },
       });
       return node ?? null;
