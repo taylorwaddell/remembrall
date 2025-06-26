@@ -94,6 +94,6 @@ export default function SearchCreate() {
 }
 
 enum Mode {
-  Search,
-  Create,
+  Search = 1,
+  Create = 2,
 }
