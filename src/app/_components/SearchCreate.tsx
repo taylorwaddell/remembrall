@@ -46,7 +46,7 @@ export default function SearchCreate() {
 
   return (
     <form
-      className="flex h-fit w-1/3 flex-col gap-1"
+      className="flex h-fit w-100 flex-col gap-1 md:w-2/3 lg:w-1/3"
       onSubmit={(e) => submitNewNode(e)}
     >
       <ToggleGroup
