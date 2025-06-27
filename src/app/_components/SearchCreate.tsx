@@ -22,6 +22,10 @@ export default function SearchCreate() {
       if (result.ok) {
         toast.success(`Memory created`, { description: result.value.text });
         setUserText("");
+      } else {
+        toast.error(`Failed to create memory.`, {
+          description: result.error.message,
+        });
       }
     },
   });
@@ -75,9 +79,14 @@ export default function SearchCreate() {
           value={userText}
           onChange={({ target }) => setUserText(target.value)}
           className="width-full flex-1 rounded-full p-3"
+          disabled={isFetching || createMemoryNode.isPending}
         />
-        <button type="submit" className="w-25 rounded-full p-2">
-          {isFetching ? (
+        <button
+          type="submit"
+          className="w-25 rounded-full p-2"
+          disabled={isFetching || createMemoryNode.isPending}
+        >
+          {isFetching || createMemoryNode.isPending ? (
             <Loader className="mx-auto animate-spin" />
           ) : (
             <ArrowRight className="mx-auto" />
