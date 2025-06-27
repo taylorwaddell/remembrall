@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Loader, Pencil, Plane, Search, Send } from "lucide-react";
+import { Loader, Pencil, Search, Send } from "lucide-react";
 
 import { Input } from "@base-ui-components/react/input";
 import { Toggle } from "@base-ui-components/react/toggle";
