@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Loader, Pencil, Search } from "lucide-react";
+import { ArrowRight, Loader, Pencil, Plane, Search, Send } from "lucide-react";
 
 import { Input } from "@base-ui-components/react/input";
 import { Toggle } from "@base-ui-components/react/toggle";
@@ -98,13 +98,24 @@ export default function SearchCreate() {
         <button
           type="submit"
           className="w-25 rounded-full p-2"
-          disabled={isFetching || createMemoryNode.isPending}
+          disabled={
+            isFetching || createMemoryNode.isPending || userText?.length < 1
+          }
         >
           {isFetching || createMemoryNode.isPending ? (
-            <Loader className="mx-auto animate-spin" />
+            <Loader aria-hidden="true" className="mx-auto animate-spin" />
+          ) : mode === Mode.Search ? (
+            <Search aria-hidden="true" className="mx-auto" />
           ) : (
-            <ArrowRight className="mx-auto" />
+            <Send aria-hidden="true" className="mx-auto" />
           )}
+          <span className="sr-only">
+            {isFetching || createMemoryNode.isPending
+              ? "Loading..."
+              : mode === Mode.Search
+                ? "Search"
+                : "Create"}
+          </span>
         </button>
       </div>
       {Boolean(nodes?.length) && (
