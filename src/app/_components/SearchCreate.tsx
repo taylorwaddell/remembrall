@@ -17,6 +17,7 @@ export default function SearchCreate() {
       text: string;
     }[]
   >([]);
+  const memoryNodeCount = api.memoryNode.getMemoryNodeCountByUserId.useQuery();
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
     onSuccess: (result) => {
       if (result.ok) {
@@ -56,24 +57,35 @@ export default function SearchCreate() {
       className="flex h-fit w-100 flex-col gap-1 md:w-2/3 lg:w-1/3"
       onSubmit={(e) => submitNewNode(e)}
     >
-      <ToggleGroup
-        defaultValue={[String(Mode.Search)]}
-        onValueChange={(e) => setModeState(String(e))}
-        className="flex w-fit rounded-full p-2"
-      >
-        <Toggle
-          value={String(Mode.Search)}
-          className="mr-2 flex items-center gap-2 rounded-full px-3 py-1 active:bg-stone-200 active:text-stone-800 data-[pressed]:bg-stone-200 data-[pressed]:text-stone-800"
+      <div className="flex items-baseline justify-between">
+        <ToggleGroup
+          defaultValue={[String(Mode.Search)]}
+          onValueChange={(e) => setModeState(String(e))}
+          className="flex w-fit rounded-full p-2"
         >
-          <Search size={16} /> Search
-        </Toggle>
-        <Toggle
-          value={String(Mode.Create)}
-          className="flex items-center gap-2 rounded-full px-3 py-1 active:bg-stone-200 active:text-stone-800 data-[pressed]:bg-stone-200 data-[pressed]:text-stone-800"
+          <Toggle
+            value={String(Mode.Search)}
+            className="mr-2 flex items-center gap-2 rounded-full px-3 py-1 active:bg-stone-200 active:text-stone-800 data-[pressed]:bg-stone-200 data-[pressed]:text-stone-800"
+          >
+            <Search size={16} /> Search
+          </Toggle>
+          <Toggle
+            value={String(Mode.Create)}
+            className="flex items-center gap-2 rounded-full px-3 py-1 active:bg-stone-200 active:text-stone-800 data-[pressed]:bg-stone-200 data-[pressed]:text-stone-800"
+          >
+            <Pencil size={16} /> Create
+          </Toggle>
+        </ToggleGroup>
+        <small
+          className={`mr-8 h-fit rounded-sm bg-white px-1 text-stone-800 ${memoryNodeCount.isLoading && "py-1"}`}
         >
-          <Pencil size={16} /> Create
-        </Toggle>
-      </ToggleGroup>
+          {!memoryNodeCount.isLoading && memoryNodeCount?.data?.ok ? (
+            memoryNodeCount.data.value
+          ) : (
+            <Loader className="mx-auto animate-spin" size={10} />
+          )}
+        </small>
+      </div>
       <div className="flex h-fit w-full rounded-full border-1 p-2">
         <Input
           placeholder="search"

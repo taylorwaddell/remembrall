@@ -80,4 +80,15 @@ export const memoryNodeRouter = createTRPCRouter({
       });
       return nodes;
     }),
+  getMemoryNodeCountByUserId: protectedProcedure.query(
+    async ({ ctx }): Promise<Result<number, AppError>> => {
+      const nodeCount = await ctx.db.memoryNode.count({
+        where: {
+          userId: { equals: ctx.session.user.id },
+        },
+      });
+
+      return { ok: true, value: nodeCount };
+    },
+  ),
 });
