@@ -57,21 +57,21 @@ export default function SearchCreate() {
       className="flex h-fit w-100 flex-col gap-1 md:w-2/3 lg:w-1/3"
       onSubmit={(e) => submitNewNode(e)}
     >
-      <div className="flex items-baseline justify-between">
+      <div className="flex items-baseline justify-between pb-2">
         <ToggleGroup
           defaultValue={[String(Mode.Search)]}
           onValueChange={(e) => setModeState(String(e))}
-          className="flex w-fit rounded-full p-2"
+          className="flex w-fit rounded-full"
         >
           <Toggle
             value={String(Mode.Search)}
-            className="mr-2 flex items-center gap-2 rounded-full px-3 py-1 active:bg-stone-200 active:text-stone-800 data-[pressed]:bg-stone-200 data-[pressed]:text-stone-800"
+            className="mr-2 flex items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed]:bg-blue-400 data-[pressed]:text-stone-800"
           >
             <Search size={16} /> Search
           </Toggle>
           <Toggle
             value={String(Mode.Create)}
-            className="flex items-center gap-2 rounded-full px-3 py-1 active:bg-stone-200 active:text-stone-800 data-[pressed]:bg-stone-200 data-[pressed]:text-stone-800"
+            className="flex items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed]:bg-yellow-400 data-[pressed]:text-stone-800"
           >
             <Pencil size={16} /> Create
           </Toggle>

@@ -11,11 +11,11 @@ export default async function Home() {
     <HydrateClient>
       {session ? (
         <>
-          <nav className="flex justify-between bg-stone-800 p-3 text-stone-100">
+          <nav className="flex justify-between p-3">
             <h1 className="text-3xl">Remembrall</h1>
             <AvatarDropdown />
           </nav>
-          <main className="flex min-h-screen items-center justify-center bg-stone-800 p-3 text-stone-100">
+          <main className="flex min-h-screen items-center justify-center p-3">
             <SearchCreate />
           </main>
         </>
