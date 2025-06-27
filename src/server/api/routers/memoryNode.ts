@@ -61,7 +61,7 @@ export const memoryNodeRouter = createTRPCRouter({
           },
         },
       });
-      return { ok: true, value: node ?? null };
+      return { ok: true, value: node };
     }),
   getMemoryNodesByUserId: protectedProcedure
     .input(z.object({ query: z.string().min(1) }))
