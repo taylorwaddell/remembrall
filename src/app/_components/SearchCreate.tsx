@@ -66,13 +66,13 @@ export default function SearchCreate() {
         >
           <Toggle
             value={String(Mode.Search)}
-            className="mr-2 flex items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed]:bg-blue-400 data-[pressed]:text-stone-800"
+            className="mr-2 flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed]:bg-blue-400 data-[pressed]:text-stone-800"
           >
             <Search size={16} /> Search
           </Toggle>
           <Toggle
             value={String(Mode.Create)}
-            className="flex items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed]:bg-yellow-400 data-[pressed]:text-stone-800"
+            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed]:bg-yellow-400 data-[pressed]:text-stone-800"
           >
             <Pencil size={16} /> Create
           </Toggle>
