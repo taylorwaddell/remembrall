@@ -8,7 +8,7 @@ import { ToggleGroup } from "@base-ui-components/react/toggle-group";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
 import { useState, type FormEvent } from "react";
-import { LinkItUrl } from "react-linkify-it";
+import MemoryNode from "./MemoryNode";
 
 export default function SearchCreate() {
   const [userText, setUserText] = useState("");
@@ -38,7 +38,7 @@ export default function SearchCreate() {
       },
       { enabled: false },
     );
-  const submitNewNode = async (e: FormEvent) => {
+  const handleSubmission = async (e: FormEvent) => {
     e.preventDefault();
     if (isFetching || createMemoryNode.isPending) return;
     if (mode === Mode.Create) {
@@ -56,7 +56,7 @@ export default function SearchCreate() {
   return (
     <form
       className="flex h-fit w-100 flex-col gap-1 md:w-2/3 lg:w-1/3"
-      onSubmit={(e) => submitNewNode(e)}
+      onSubmit={(e) => handleSubmission(e)}
     >
       <div className="flex items-baseline justify-between pb-2">
         <ToggleGroup
@@ -93,7 +93,7 @@ export default function SearchCreate() {
           value={userText}
           onChange={({ target }) => setUserText(target.value)}
           className="width-full flex-1 rounded-full p-3"
-          disabled={isFetching || createMemoryNode.isPending}
+          disabled={createMemoryNode.isPending}
         />
         <button
           type="submit"
@@ -119,13 +119,9 @@ export default function SearchCreate() {
         </button>
       </div>
       {Boolean(nodes?.length) && (
-        <ul className="mt-2 list-disc">
+        <ul className="mt-3">
           {nodes.map((n) => (
-            <li className="mb-2" key={n.text}>
-              <LinkItUrl className="text-blue-400 hover:underline">
-                {n.text}
-              </LinkItUrl>
-            </li>
+            <MemoryNode key={n.text} text={n.text} className="mb-2" />
           ))}
         </ul>
       )}
