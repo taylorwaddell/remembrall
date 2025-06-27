@@ -8,6 +8,7 @@ import { ToggleGroup } from "@base-ui-components/react/toggle-group";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
 import { useState, type FormEvent } from "react";
+import { LinkItUrl } from "react-linkify-it";
 
 export default function SearchCreate() {
   const [userText, setUserText] = useState("");
@@ -110,7 +111,9 @@ export default function SearchCreate() {
         <ul className="mt-2 list-disc">
           {nodes.map((n) => (
             <li className="mb-2" key={n.text}>
-              {n.text}
+              <LinkItUrl className="text-blue-400 hover:underline">
+                {n.text}
+              </LinkItUrl>
             </li>
           ))}
         </ul>
