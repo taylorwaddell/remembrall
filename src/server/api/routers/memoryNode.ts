@@ -1,8 +1,10 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 import OpenAI from "openai";
+import { OpenAIAPIError, type AppError, type Result } from "~/lib/errors";
 import { z } from "zod";
 import { zodTextFormat } from "openai/helpers/zod";
+import type { MemoryNode } from "@prisma/client";
 
 const openai = new OpenAI({ apiKey: process.env.AUTH_OPENAI_API_KEY });
 
@@ -29,7 +31,7 @@ export const memoryNodeRouter = createTRPCRouter({
         userText: z.string().min(1),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }): Promise<Result<MemoryNode, AppError>> => {
       const aiResponse = await openai.responses.parse({
         model: "chatgpt-4o-latest",
         input: [
@@ -43,6 +45,9 @@ export const memoryNodeRouter = createTRPCRouter({
           format: zodTextFormat(AITagFormat, "event"),
         },
       });
+      if (aiResponse.error) {
+        return { ok: false, error: new OpenAIAPIError(aiResponse.error) };
+      }
       const output = aiResponse.output_parsed;
       const node = await ctx.db.memoryNode.create({
         data: {
@@ -56,7 +61,7 @@ export const memoryNodeRouter = createTRPCRouter({
           },
         },
       });
-      return node ?? null;
+      return { ok: true, value: node };
     }),
   getMemoryNodesByUserId: protectedProcedure
     .input(z.object({ query: z.string().min(1) }))
