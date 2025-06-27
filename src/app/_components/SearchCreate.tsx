@@ -94,9 +94,11 @@ export default function SearchCreate() {
         </button>
       </div>
       {Boolean(nodes?.length) && (
-        <ul>
+        <ul className="mt-2 list-disc">
           {nodes.map((n) => (
-            <li key={n.text}>{n.text}</li>
+            <li className="mb-2" key={n.text}>
+              {n.text}
+            </li>
           ))}
         </ul>
       )}
