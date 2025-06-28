@@ -16,10 +16,14 @@ export default defineConfig<Env>({
 
   migrate: {
     async adapter(env) {
-      return new PrismaLibSQL({
-        url: env.AUTH_LIBSQL_DATABASE_URL,
-        authToken: env.AUTH_LIBSQL_DATABASE_TOKEN,
-      });
+      if (process.env.NODE_ENV === "production") {
+        return new PrismaLibSQL({
+          url: env.AUTH_LIBSQL_DATABASE_URL,
+          authToken: env.AUTH_LIBSQL_DATABASE_TOKEN,
+        });
+      }
+
+      return new PrismaLibSQL({ url: "file:./dev.db" });
     },
   },
 });

@@ -6,10 +6,14 @@ const adapter = new PrismaLibSQL({
   authToken: `${process.env.AUTH_TURSO_AUTH_TOKEN}`,
 });
 
-const createPrismaClient = () => new PrismaClient({ adapter });
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: ReturnType<typeof createPrismaClient> | undefined;
+const createPrismaClient = () => {
+  if (process.env.NODE_ENV === "production") {
+    return new PrismaClient({ adapter });
+  } else {
+    return new PrismaClient({
+      log: ["query", "error", "warn"],
+    });
+  }
 };
 
 export const db = createPrismaClient();
