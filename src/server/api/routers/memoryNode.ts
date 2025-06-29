@@ -101,8 +101,7 @@ export const memoryNodeRouter = createTRPCRouter({
         sqltag`
           SELECT mn.* FROM MemoryNodeFTS fts
           JOIN MemoryNode mn on fts.memoryNodeId = mn.id
-          WHERE MemoryNodeFTS MATCH ${input.query}
-            AND mn.userId = ${userId}
+          WHERE MemoryNodeFTS MATCH 'typescript'
           ORDER BY bm25(MemoryNodeFTS, 1.0, 0.2)
           LIMIT 10
         `,
