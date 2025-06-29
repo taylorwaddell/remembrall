@@ -8,16 +8,19 @@ import { ToggleGroup } from "@base-ui-components/react/toggle-group";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
 import { useState, type FormEvent } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import MemoryNode from "./MemoryNode";
 
 export default function SearchCreate() {
   const [userText, setUserText] = useState("");
-  const [mode, setMode] = useState<Mode>(Mode.Search);
+  const [mode, setMode] = useState<Mode[]>([Mode.Search]);
   const [nodes, setNodes] = useState<
     {
       text: string;
     }[]
   >([]);
+  useHotkeys("1", () => setMode([Mode.Search]), [mode]);
+  useHotkeys("2", () => setMode([Mode.Create]), [mode]);
   const memoryNodeCount = api.memoryNode.getMemoryNodeCountByUserId.useQuery();
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
     onSuccess: (result) => {
@@ -41,16 +44,15 @@ export default function SearchCreate() {
   const handleSubmission = async (e: FormEvent) => {
     e.preventDefault();
     if (isFetching || createMemoryNode.isPending) return;
-    if (mode === Mode.Create) {
+    if (mode.includes(Mode.Create)) {
       createMemoryNode.mutate({ userText });
     } else {
       const { data } = await refetch();
       if (data?.ok) setNodes(data.value);
     }
   };
-  const setModeState = (modeEvent: string) => {
-    if (!parseInt(modeEvent)) return;
-    setMode(parseInt(modeEvent));
+  const setModeState = (modeEvent: Mode) => {
+    setMode([modeEvent]);
   };
 
   return (
@@ -60,19 +62,21 @@ export default function SearchCreate() {
     >
       <div className="flex items-baseline justify-between pb-2">
         <ToggleGroup
-          defaultValue={[String(Mode.Search)]}
-          onValueChange={(e) => setModeState(String(e))}
+          value={[mode]}
+          onValueChange={(e: unknown) => setModeState(e as Mode)}
           className="flex w-fit rounded-full"
         >
           <Toggle
-            value={String(Mode.Search)}
-            className="mr-2 flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed]:bg-blue-400 data-[pressed]:text-stone-800"
+            value={Mode.Search}
+            data-pressed={mode.includes(Mode.Search)}
+            className="mr-2 flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed=true]:bg-blue-400 data-[pressed=true]:text-stone-800"
           >
             <Search aria-hidden="true" size={16} /> Search
           </Toggle>
           <Toggle
-            value={String(Mode.Create)}
-            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed]:bg-yellow-400 data-[pressed]:text-stone-800"
+            value={Mode.Create}
+            data-pressed={mode.includes(Mode.Create)}
+            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed=true]:bg-yellow-400 data-[pressed=true]:text-stone-800"
           >
             <Pencil aria-hidden="true" size={16} /> Create
           </Toggle>
@@ -111,7 +115,7 @@ export default function SearchCreate() {
         >
           {isFetching || createMemoryNode.isPending ? (
             <Loader aria-hidden="true" className="mx-auto animate-spin" />
-          ) : mode === Mode.Search ? (
+          ) : mode.includes(Mode.Search) ? (
             <Search aria-hidden="true" className="mx-auto" />
           ) : (
             <Send aria-hidden="true" className="mx-auto" />
@@ -119,7 +123,7 @@ export default function SearchCreate() {
           <span className="sr-only">
             {isFetching || createMemoryNode.isPending
               ? "Loading..."
-              : mode === Mode.Search
+              : mode.includes(Mode.Search)
                 ? "Search"
                 : "Create"}
           </span>
@@ -137,6 +141,6 @@ export default function SearchCreate() {
 }
 
 enum Mode {
-  Search = 1,
-  Create = 2,
+  Search = "Search",
+  Create = "Create",
 }
