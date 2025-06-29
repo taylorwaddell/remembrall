@@ -32,7 +32,7 @@ export default function SearchCreate() {
     },
   });
   const { refetch, isFetching } =
-    api.memoryNode.getMemoryNodesByUserId.useQuery(
+    api.memoryNode.fullTextSearchMemoryNodes.useQuery(
       {
         query: userText,
       },
@@ -45,7 +45,7 @@ export default function SearchCreate() {
       createMemoryNode.mutate({ userText });
     } else {
       const { data } = await refetch();
-      if (data) setNodes(data);
+      if (data?.ok) setNodes(data.value);
     }
   };
   const setModeState = (modeEvent: string) => {

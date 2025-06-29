@@ -91,4 +91,24 @@ export const memoryNodeRouter = createTRPCRouter({
       return { ok: true, value: nodeCount };
     },
   ),
+  fullTextSearchMemoryNodes: protectedProcedure
+    .input(z.object({ query: z.string().min(1) }))
+    .query(async ({ input, ctx }): Promise<Result<MemoryNode[], AppError>> => {
+      const userId = ctx.session.user.id;
+
+      const results: MemoryNode[] = await ctx.db.$queryRawUnsafe(
+        `
+      SELECT mn.* FROM MemoryNodeFTS fts
+      JOIN MemoryNode mn on fts.memoryNodeId = mn.id
+      WHERE MemoryNodeFTS MATCH ?
+        AND mn.userId = ?
+      ORDER BY bm25(MemoryNodeFTS, 1.0, 0.2)
+      LIMIT 10
+      `,
+        input.query,
+        userId,
+      );
+
+      return { ok: true, value: results };
+    }),
 });

@@ -3,7 +3,6 @@
 ### Priority
 
 - [ ] Implement fuzzy search (FTS)
-- [ ] keyboard shortcut for selecting search / create
 
 ### General
 
@@ -19,6 +18,7 @@
 
 ## Completed
 
+- [x] keyboard shortcut for selecting search / create
 - [x] loader for creating
 - [x] card style for node
 - [x] create database schema
