@@ -5,6 +5,7 @@ import { OpenAIAPIError, type AppError, type Result } from "~/lib/errors";
 import { z } from "zod";
 import { zodTextFormat } from "openai/helpers/zod";
 import type { MemoryNode } from "@prisma/client";
+import { sqltag } from "@prisma/client/runtime/library";
 
 const openai = new OpenAI({ apiKey: process.env.AUTH_OPENAI_API_KEY });
 
@@ -96,15 +97,15 @@ export const memoryNodeRouter = createTRPCRouter({
     .query(async ({ input, ctx }): Promise<Result<MemoryNode[], AppError>> => {
       const userId = ctx.session.user.id;
 
-      const results: MemoryNode[] = await ctx.db.$queryRawUnsafe(
-        `
-      SELECT mn.* FROM MemoryNodeFTS fts
-      JOIN MemoryNode mn on fts.memoryNodeId = mn.id
-      WHERE MemoryNodeFTS MATCH ?
-        AND mn.userId = ?
-      ORDER BY bm25(MemoryNodeFTS, 1.0, 0.2)
-      LIMIT 10
-      `,
+      const results: MemoryNode[] = await ctx.db.$queryRaw(
+        sqltag`
+          SELECT mn.* FROM MemoryNodeFTS fts
+          JOIN MemoryNode mn on fts.memoryNodeId = mn.id
+          WHERE MemoryNodeFTS MATCH ${input.query}
+            AND mn.userId = ${userId}
+          ORDER BY bm25(MemoryNodeFTS, 1.0, 0.2)
+          LIMIT 10
+        `,
         input.query,
         userId,
       );
