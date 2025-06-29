@@ -15,6 +15,7 @@
 - [ ] add ability to delete node
 - [ ] add ability to edit nodes
   - [ ] will have to regen tags
+- [ ] Raycast extension
 
 ## Completed
 
