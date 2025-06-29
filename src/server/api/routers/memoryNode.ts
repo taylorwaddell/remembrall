@@ -97,27 +97,16 @@ export const memoryNodeRouter = createTRPCRouter({
     .query(async ({ input, ctx }): Promise<Result<MemoryNode[], AppError>> => {
       const userId = ctx.session.user.id;
 
-      const q = sqltag`
-        SELECT mn.* 
-        FROM MemoryNodeFTS AS fts
-        JOIN MemoryNode   AS mn  ON fts.memoryNodeId = mn.id
-        WHERE fts MATCH ${input.query}
-          AND mn.userId = ${userId}
-        LIMIT 1;
-      `;
-      const q2 = sqltag`
-          SELECT mn.* FROM MemoryNodeFTS fts
-          JOIN MemoryNode mn on fts.memoryNodeId = mn.id
-          WHERE MemoryNodeFTS MATCH ${input.query}
-            AND mn.userId = ${userId}
-            ORDER BY bm25(fts, 2, 1)
-            LIMIT 10
-            `;
-      console.log(q.text, q.values);
       const results: MemoryNode[] = await ctx.db.$queryRaw(
-        q,
-        input.query,
-        userId,
+        sqltag`
+          SELECT mn.*
+          FROM MemoryNodeFTS(${input.query}) AS fts
+          JOIN MemoryNode AS mn
+            ON fts.memoryNodeId = mn.id
+          WHERE mn.userId = ${userId}
+          ORDER BY fts.rank
+          LIMIT 10;
+        `,
       );
 
       return { ok: true, value: results };
