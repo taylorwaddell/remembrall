@@ -102,7 +102,6 @@ export const memoryNodeRouter = createTRPCRouter({
           SELECT mn.* FROM MemoryNodeFTS fts
           JOIN MemoryNode mn on fts.memoryNodeId = mn.id
           WHERE MemoryNodeFTS MATCH 'typescript'
-          ORDER BY bm25(MemoryNodeFTS, 1.0, 0.2)
           LIMIT 10
         `,
         input.query,
