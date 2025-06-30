@@ -68,14 +68,11 @@ export default function SearchCreate() {
       onSubmit={(e) => handleSubmission(e)}
     >
       <div className="flex items-baseline justify-between pb-2">
-        <ToggleGroup
-          value={[mode]}
-          onValueChange={(e: unknown) => setModeState(e as Mode)}
-          className="flex w-fit rounded-full"
-        >
+        <ToggleGroup value={[mode]} className="flex w-fit rounded-full">
           <Toggle
             value={Mode.Search}
             data-pressed={mode.includes(Mode.Search)}
+            onClick={() => setModeState(Mode.Search)}
             className="mr-2 flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed=true]:bg-blue-400 data-[pressed=true]:text-stone-800"
           >
             <Search aria-hidden="true" size={16} /> Search
@@ -83,6 +80,7 @@ export default function SearchCreate() {
           <Toggle
             value={Mode.Create}
             data-pressed={mode.includes(Mode.Create)}
+            onClick={() => setModeState(Mode.Create)}
             className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed=true]:bg-yellow-400 data-[pressed=true]:text-stone-800"
           >
             <Pencil aria-hidden="true" size={16} /> Create
