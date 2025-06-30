@@ -64,6 +64,17 @@ export const memoryNodeRouter = createTRPCRouter({
       });
       return { ok: true, value: node };
     }),
+  deleteMemoryNodeById: protectedProcedure
+    .input(z.object({ memoryNodeId: z.number() }))
+    .mutation(async ({ input, ctx }): Promise<Result<string, AppError>> => {
+      const userId = ctx.session.user.id;
+
+      const deleted = await ctx.db.memoryNode.delete({
+        where: { id: input.memoryNodeId, userId: userId },
+      });
+
+      return { ok: true, value: deleted.text };
+    }),
   getMemoryNodesByUserId: protectedProcedure
     .input(z.object({ query: z.string().min(1) }))
     .query(async ({ input, ctx }) => {

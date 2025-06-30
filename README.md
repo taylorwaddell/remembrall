@@ -2,9 +2,7 @@
 
 ### Priority
 
-- [ ] Raise up state
 - [ ] ability to export data
-- [ ] add ability to delete node
 
 ### General
 
@@ -15,9 +13,12 @@
 - [ ] add ability to edit nodes
   - [ ] will have to regen tags
 - [ ] Raycast extension
+- [ ] add custom tags
+- [ ] show tags on node results setting
 
 ## Completed
 
+- [x] add ability to delete node
 - [x] keyboard shortcut for selecting search / create
 - [x] Implement fuzzy search (FTS)
 - [x] loader for creating

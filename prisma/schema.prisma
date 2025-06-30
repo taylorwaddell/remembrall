@@ -28,7 +28,7 @@ model Tag {
     id           Int        @id @default(autoincrement())
     text         String
     memoryNodeId Int
-    memoryNode   MemoryNode @relation(fields: [memoryNodeId], references: [id])
+    memoryNode   MemoryNode @relation(fields: [memoryNodeId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth

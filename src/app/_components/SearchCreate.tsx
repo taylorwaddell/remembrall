@@ -10,15 +10,12 @@ import { api } from "~/trpc/react";
 import { useState, type FormEvent } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import MemoryNode from "./MemoryNode";
+import type { MemoryNode as MemoryNodeType } from "@prisma/client";
 
 export default function SearchCreate() {
   const [userText, setUserText] = useState("");
   const [mode, setMode] = useState<Mode[]>([Mode.Search]);
-  const [nodes, setNodes] = useState<
-    {
-      text: string;
-    }[]
-  >([]);
+  const [nodes, setNodes] = useState<MemoryNodeType[]>([]);
   useHotkeys("1", () => setMode([Mode.Search]), [mode]);
   useHotkeys("2", () => setMode([Mode.Create]), [mode]);
   const memoryNodeCount = api.memoryNode.getMemoryNodeCountByUserId.useQuery();
@@ -28,7 +25,7 @@ export default function SearchCreate() {
         toast.success(`Memory created`, { description: result.value.text });
         setUserText("");
       } else {
-        toast.error(`Failed to create memory.`, {
+        toast.error(`Failed to create memory`, {
           description: result.error.message,
         });
       }
@@ -53,6 +50,16 @@ export default function SearchCreate() {
   };
   const setModeState = (modeEvent: Mode) => {
     setMode([modeEvent]);
+  };
+  const refreshCountAndResults = async () => {
+    const countResponse = await memoryNodeCount.refetch();
+    const searchResponse = await refetch();
+
+    if (countResponse.data?.ok) {
+    }
+    if (searchResponse.data?.ok) {
+      setNodes(searchResponse.data.value);
+    }
   };
 
   return (
@@ -132,7 +139,12 @@ export default function SearchCreate() {
       {Boolean(nodes?.length) && (
         <ul className="mt-3">
           {nodes.map((n) => (
-            <MemoryNode key={n.text} text={n.text} className="mb-2" />
+            <MemoryNode
+              key={n.id}
+              memoryNode={n}
+              className="mb-2"
+              refreshData={refreshCountAndResults}
+            />
           ))}
         </ul>
       )}
