@@ -16,3 +16,7 @@
     @apply ring;
   }
 }
+
+.contents {
+  display: contents;
+}

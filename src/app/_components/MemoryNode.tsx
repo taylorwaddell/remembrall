@@ -39,7 +39,7 @@ export default function MemoryNode({
     <li
       className={`flex justify-between rounded-md bg-stone-800 p-2 ${className}`}
     >
-      <LinkItUrl className="text-blue-400 hover:underline">
+      <LinkItUrl className="contents text-blue-400 hover:underline">
         {memoryNode.text}
       </LinkItUrl>
       <button
