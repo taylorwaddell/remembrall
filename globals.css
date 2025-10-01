@@ -11,7 +11,14 @@
   isolation: isolate;
 }
 
-@layer base;
+@layer base {
+  :focus-visible {
+    outline-color: #87adf4;
+    outline-style: auto;
+    outline-width: 5px;
+    outline-offset: -2px;
+  }
+}
 
 .contents {
   display: contents;
@@ -23,5 +30,8 @@ button {
 }
 
 button:active:not(.sans-scale) {
+  scale: 0.97;
+}
+.btn:active {
   scale: 0.97;
 }
