@@ -44,12 +44,33 @@ export const authConfig = {
      */
   ],
   adapter: PrismaAdapter(db),
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  cookies: {
+    sessionToken: {
+      name: `authjs.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+  },
   callbacks: {
-    session: ({ session, user }) => ({
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session: ({ session, token }) => ({
       ...session,
       user: {
         ...session.user,
-        id: user.id,
+        id: typeof token.id === "string" ? token.id : "",
       },
     }),
   },

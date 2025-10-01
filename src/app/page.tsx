@@ -5,7 +5,13 @@ import SearchCreate from "./_components/SearchCreate";
 import { auth } from "~/server/auth";
 
 export default async function Home() {
-  const session = await auth();
+  let session;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("Session error:", error);
+    session = null;
+  }
 
   return (
     <HydrateClient>
