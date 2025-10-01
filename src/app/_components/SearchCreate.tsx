@@ -7,7 +7,7 @@ import { Toggle } from "@base-ui-components/react/toggle";
 import { ToggleGroup } from "@base-ui-components/react/toggle-group";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import MemoryNode from "./MemoryNode";
 import type { MemoryNode as MemoryNodeType } from "@prisma/client";
@@ -16,8 +16,17 @@ export default function SearchCreate() {
   const [userText, setUserText] = useState("");
   const [mode, setMode] = useState<Mode[]>([Mode.Search]);
   const [nodes, setNodes] = useState<MemoryNodeType[]>([]);
-  useHotkeys("1", () => setMode([Mode.Search]), [mode]);
-  useHotkeys("2", () => setMode([Mode.Create]), [mode]);
+  const searchRef = useRef<HTMLInputElement>(null);
+  useHotkeys(["1", "s"], () => setMode([Mode.Search]), [mode]);
+  useHotkeys(["2", "c"], () => setMode([Mode.Create]), [mode]);
+  useHotkeys(
+    "Slash",
+    (e) => {
+      e.preventDefault();
+      searchRef.current?.focus();
+    },
+    [searchRef],
+  );
   const memoryNodeCount = api.memoryNode.getMemoryNodeCountByUserId.useQuery();
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
     onSuccess: (result) => {
@@ -68,12 +77,12 @@ export default function SearchCreate() {
       onSubmit={(e) => handleSubmission(e)}
     >
       <div className="flex items-baseline justify-between pb-2">
-        <ToggleGroup value={[mode]} className="flex w-fit rounded-full">
+        <ToggleGroup value={[mode]} className="flex w-fit rounded-md">
           <Toggle
             value={Mode.Search}
             data-pressed={mode.includes(Mode.Search)}
             onClick={() => setModeState(Mode.Search)}
-            className="mr-2 flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed=true]:bg-blue-400 data-[pressed=true]:text-stone-800"
+            className="mr-2 flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-blue-900 active:bg-blue-200 data-[pressed=true]:bg-blue-200"
           >
             <Search aria-hidden="true" size={16} /> Search
           </Toggle>
@@ -81,13 +90,14 @@ export default function SearchCreate() {
             value={Mode.Create}
             data-pressed={mode.includes(Mode.Create)}
             onClick={() => setModeState(Mode.Create)}
-            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed=true]:bg-yellow-400 data-[pressed=true]:text-stone-800"
+            className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-yellow-900 active:bg-yellow-200 data-[pressed=true]:bg-yellow-200"
           >
             <Pencil aria-hidden="true" size={16} /> Create
           </Toggle>
         </ToggleGroup>
         <small
-          className={`mr-8 h-fit rounded-sm bg-white px-1 text-stone-800 ${memoryNodeCount.isLoading && "py-1"}`}
+          className={`h-fit rounded-md bg-stone-100 px-1 text-stone-500 ${memoryNodeCount.isLoading && "py-1"}`}
+          title="Node Count"
         >
           {!memoryNodeCount.isLoading && memoryNodeCount?.data?.ok ? (
             memoryNodeCount.data.value
@@ -103,17 +113,18 @@ export default function SearchCreate() {
           )}
         </small>
       </div>
-      <div className="flex h-fit w-full rounded-full border-1 p-2">
+      <div className="flex h-fit w-full rounded-md bg-stone-100 p-2">
         <Input
-          placeholder="search"
+          ref={searchRef}
+          placeholder="Search"
           value={userText}
           onChange={({ target }) => setUserText(target.value)}
-          className="width-full flex-1 rounded-full p-3"
+          className="width-full flex-1 rounded-md p-2"
           disabled={createMemoryNode.isPending}
         />
         <button
           type="submit"
-          className="w-25 rounded-full p-2"
+          className="cursor-pointer rounded-sm p-2"
           disabled={
             isFetching || createMemoryNode.isPending || userText?.length < 1
           }

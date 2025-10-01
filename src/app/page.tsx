@@ -20,7 +20,7 @@ export default async function Home() {
           </main>
         </>
       ) : (
-        <main className="flex min-h-screen flex-col items-center justify-center bg-stone-800 text-white">
+        <main className="flex min-h-screen flex-col items-center justify-center">
           <h1 className="mb-4 text-3xl">Remembrall</h1>
           <Link
             href={"/api/auth/signin"}

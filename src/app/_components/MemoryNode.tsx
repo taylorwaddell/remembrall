@@ -37,14 +37,14 @@ export default function MemoryNode({
 
   return (
     <li
-      className={`flex justify-between rounded-md bg-stone-800 p-2 ${className}`}
+      className={`flex justify-between rounded-sm p-2 ${className} bg-stone-50`}
     >
-      <LinkItUrl className="contents text-blue-400 hover:underline">
-        {memoryNode.text}
+      <LinkItUrl className="text-blue-600 hover:underline">
+        <p>{memoryNode.text}</p>
       </LinkItUrl>
       <button
         type="button"
-        className="cursor-pointer rounded px-2 hover:bg-stone-900"
+        className="cursor-pointer rounded px-2 text-red-600 hover:bg-red-100"
         onClick={() => handleDeletion()}
         disabled={deleteMemoryNode.isPending}
       >

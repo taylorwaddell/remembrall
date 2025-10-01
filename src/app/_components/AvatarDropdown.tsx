@@ -8,7 +8,7 @@ export default async function AvatarDropdown() {
 
   const userImage = () => {
     const user = session?.user;
-    const fallbackClasses = "block h-10 w-10 rounded-full bg-stone-900";
+    const fallbackClasses = "block h-10 w-10 rounded-full";
     if (user) {
       const firstLetter = user.name ? user.name[0] : "";
       if (user.image) {
@@ -39,8 +39,8 @@ export default async function AvatarDropdown() {
       </Menu.Trigger>
       <Menu.Portal>
         <Menu.Positioner sideOffset={8}>
-          <Menu.Popup className="rounded-sm bg-stone-900 px-2 py-2 text-stone-100">
-            <Menu.Item className="rounded-md px-6 py-1 hover:bg-stone-950">
+          <Menu.Popup className="rounded-sm px-2 py-2">
+            <Menu.Item className="rounded-md px-6 py-1">
               <Link href={"/api/auth/signout"}>{"Sign out"}</Link>
             </Menu.Item>
           </Menu.Popup>

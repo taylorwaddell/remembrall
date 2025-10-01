@@ -2,7 +2,7 @@
 
 @theme {
   --font-sans:
-    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    var(--font-funnel-display), ui-sans-serif, system-ui, sans-serif, arial,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
@@ -11,12 +11,17 @@
   isolation: isolate;
 }
 
-@layer base {
-  *:focus {
-    @apply ring;
-  }
-}
+@layer base;
 
 .contents {
   display: contents;
+}
+
+button {
+  border: 0px !important;
+  transition: all 0.15s ease;
+}
+
+button:active:not(.sans-scale) {
+  scale: 0.97;
 }
