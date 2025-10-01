@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${funnelDisplay.variable} text-zinc-200 dark:bg-zinc-800`}
+      className={`${funnelDisplay.variable} dark:bg-zinc-800 dark:text-zinc-200`}
     >
       <body className="root">
         <Toaster />
