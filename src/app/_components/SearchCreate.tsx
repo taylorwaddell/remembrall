@@ -82,7 +82,7 @@ export default function SearchCreate() {
             value={Mode.Search}
             data-pressed={mode.includes(Mode.Search)}
             onClick={() => setModeState(Mode.Search)}
-            className="mr-2 flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-blue-900 active:bg-blue-200 data-[pressed=true]:bg-blue-200"
+            className="mr-2 flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-blue-900 active:bg-blue-200 data-[pressed=true]:bg-blue-200 dark:text-blue-300 dark:active:bg-blue-900 dark:data-[pressed=true]:bg-blue-900"
           >
             <Search aria-hidden="true" size={14} /> Search
           </Toggle>
@@ -90,13 +90,13 @@ export default function SearchCreate() {
             value={Mode.Create}
             data-pressed={mode.includes(Mode.Create)}
             onClick={() => setModeState(Mode.Create)}
-            className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-yellow-900 active:bg-yellow-200 data-[pressed=true]:bg-yellow-200"
+            className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-yellow-900 active:bg-yellow-200 data-[pressed=true]:bg-yellow-200 dark:text-yellow-300 dark:active:bg-yellow-900 dark:data-[pressed=true]:bg-yellow-900"
           >
             <Pencil aria-hidden="true" size={14} /> Create
           </Toggle>
         </ToggleGroup>
         <small
-          className={`h-fit rounded-md bg-stone-100 px-1 text-stone-500 ${memoryNodeCount.isLoading && "py-1"}`}
+          className={`h-fit rounded-md bg-zinc-100 px-1 text-zinc-500 dark:bg-zinc-700 dark:text-zinc-200 ${memoryNodeCount.isLoading && "py-1"}`}
           title="Node Count"
         >
           {!memoryNodeCount.isLoading && memoryNodeCount?.data?.ok ? (
@@ -113,7 +113,7 @@ export default function SearchCreate() {
           )}
         </small>
       </div>
-      <div className="flex h-fit w-full rounded-md bg-stone-100 p-2">
+      <div className="flex h-fit w-full rounded-md bg-zinc-100 p-2 dark:bg-zinc-700 dark:text-zinc-200">
         <Input
           ref={searchRef}
           placeholder="Search"

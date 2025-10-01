@@ -21,7 +21,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${funnelDisplay.variable}`}>
+    <html
+      lang="en"
+      className={`${funnelDisplay.variable} text-zinc-200 dark:bg-zinc-800`}
+    >
       <body className="root">
         <Toaster />
         <TRPCReactProvider>{children}</TRPCReactProvider>
