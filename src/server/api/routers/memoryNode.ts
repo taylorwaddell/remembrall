@@ -110,13 +110,8 @@ export const memoryNodeRouter = createTRPCRouter({
 
       const results: MemoryNode[] = await ctx.db.$queryRaw(
         sqltag`
-          SELECT mn.*
-          FROM MemoryNodeFTS(${input.query}) AS fts
-          JOIN MemoryNode AS mn
-            ON fts.memoryNodeId = mn.id
-          WHERE mn.userId = ${userId}
-          ORDER BY fts.rank
-          LIMIT 10;
+          SELECT id, text, created, "userId"
+          FROM search_memory_nodes(${input.query}, ${userId}, 10);
         `,
       );
 
