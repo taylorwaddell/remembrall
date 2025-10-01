@@ -84,7 +84,7 @@ export default function SearchCreate() {
             onClick={() => setModeState(Mode.Search)}
             className="mr-2 flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-blue-900 active:bg-blue-200 data-[pressed=true]:bg-blue-200"
           >
-            <Search aria-hidden="true" size={16} /> Search
+            <Search aria-hidden="true" size={14} /> Search
           </Toggle>
           <Toggle
             value={Mode.Create}
@@ -92,7 +92,7 @@ export default function SearchCreate() {
             onClick={() => setModeState(Mode.Create)}
             className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-yellow-900 active:bg-yellow-200 data-[pressed=true]:bg-yellow-200"
           >
-            <Pencil aria-hidden="true" size={16} /> Create
+            <Pencil aria-hidden="true" size={14} /> Create
           </Toggle>
         </ToggleGroup>
         <small
