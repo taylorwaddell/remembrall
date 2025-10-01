@@ -70,7 +70,7 @@ export const authConfig = {
       ...session,
       user: {
         ...session.user,
-        id: token.id as string,
+        id: typeof token.id === "string" ? token.id : "",
       },
     }),
   },
