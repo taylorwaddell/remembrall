@@ -20,11 +20,11 @@ export default async function Home() {
           </main>
         </>
       ) : (
-        <main className="flex min-h-screen flex-col items-center justify-center bg-stone-800 text-white">
+        <main className="flex min-h-screen flex-col items-center justify-center">
           <h1 className="mb-4 text-3xl">Remembrall</h1>
           <Link
             href={"/api/auth/signin"}
-            className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+            className="btn rounded-md bg-zinc-100 px-10 py-2 font-semibold no-underline transition"
             autoFocus
           >
             {"Sign in"}

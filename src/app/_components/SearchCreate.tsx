@@ -7,7 +7,7 @@ import { Toggle } from "@base-ui-components/react/toggle";
 import { ToggleGroup } from "@base-ui-components/react/toggle-group";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import MemoryNode from "./MemoryNode";
 import type { MemoryNode as MemoryNodeType } from "@prisma/client";
@@ -16,8 +16,28 @@ export default function SearchCreate() {
   const [userText, setUserText] = useState("");
   const [mode, setMode] = useState<Mode[]>([Mode.Search]);
   const [nodes, setNodes] = useState<MemoryNodeType[]>([]);
-  useHotkeys("1", () => setMode([Mode.Search]), [mode]);
-  useHotkeys("2", () => setMode([Mode.Create]), [mode]);
+  const searchRef = useRef<HTMLInputElement>(null);
+  useHotkeys(["1", "s"], () => setMode([Mode.Search]), [mode]);
+  useHotkeys(["2", "c"], () => setMode([Mode.Create]), [mode]);
+  useHotkeys(
+    "Slash",
+    (e) => {
+      e.preventDefault();
+      searchRef.current?.focus();
+    },
+    [searchRef],
+  );
+  useHotkeys(
+    "Escape",
+    (e) => {
+      e.preventDefault();
+      searchRef.current?.blur();
+      setUserText("");
+      setNodes([]);
+    },
+    { enableOnFormTags: true },
+    [nodes],
+  );
   const memoryNodeCount = api.memoryNode.getMemoryNodeCountByUserId.useQuery();
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
     onSuccess: (result) => {
@@ -40,7 +60,7 @@ export default function SearchCreate() {
     );
   const handleSubmission = async (e: FormEvent) => {
     e.preventDefault();
-    if (isFetching || createMemoryNode.isPending) return;
+    if (isFetching || createMemoryNode.isPending || !userText.length) return;
     if (mode.includes(Mode.Create)) {
       createMemoryNode.mutate({ userText });
     } else {
@@ -68,26 +88,27 @@ export default function SearchCreate() {
       onSubmit={(e) => handleSubmission(e)}
     >
       <div className="flex items-baseline justify-between pb-2">
-        <ToggleGroup value={[mode]} className="flex w-fit rounded-full">
+        <ToggleGroup value={[mode]} className="flex w-fit rounded-md">
           <Toggle
             value={Mode.Search}
             data-pressed={mode.includes(Mode.Search)}
             onClick={() => setModeState(Mode.Search)}
-            className="mr-2 flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-blue-400 active:text-stone-800 data-[pressed=true]:bg-blue-400 data-[pressed=true]:text-stone-800"
+            className="mr-2 flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-blue-900 active:bg-blue-200 data-[pressed=true]:bg-blue-200 dark:text-blue-300 dark:active:bg-blue-900 dark:data-[pressed=true]:bg-blue-900"
           >
-            <Search aria-hidden="true" size={16} /> Search
+            <Search aria-hidden="true" size={14} /> Search
           </Toggle>
           <Toggle
             value={Mode.Create}
             data-pressed={mode.includes(Mode.Create)}
             onClick={() => setModeState(Mode.Create)}
-            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-1 active:bg-yellow-400 active:text-stone-800 data-[pressed=true]:bg-yellow-400 data-[pressed=true]:text-stone-800"
+            className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-1 text-sm text-yellow-900 active:bg-yellow-200 data-[pressed=true]:bg-yellow-200 dark:text-yellow-300 dark:active:bg-yellow-900 dark:data-[pressed=true]:bg-yellow-900"
           >
-            <Pencil aria-hidden="true" size={16} /> Create
+            <Pencil aria-hidden="true" size={14} /> Create
           </Toggle>
         </ToggleGroup>
         <small
-          className={`mr-8 h-fit rounded-sm bg-white px-1 text-stone-800 ${memoryNodeCount.isLoading && "py-1"}`}
+          className={`h-fit rounded-md bg-zinc-100 px-1 text-zinc-500 dark:bg-zinc-700 dark:text-zinc-200 ${memoryNodeCount.isLoading && "py-1"}`}
+          title="Node Count"
         >
           {!memoryNodeCount.isLoading && memoryNodeCount?.data?.ok ? (
             memoryNodeCount.data.value
@@ -103,27 +124,30 @@ export default function SearchCreate() {
           )}
         </small>
       </div>
-      <div className="flex h-fit w-full rounded-full border-1 p-2">
+      <div className="flex h-fit w-full gap-1 rounded-md bg-zinc-100 p-2 dark:bg-zinc-700 dark:text-zinc-200">
         <Input
-          placeholder="search"
+          ref={searchRef}
+          placeholder={mode.includes(Mode.Search) ? "Search" : "Create"}
           value={userText}
           onChange={({ target }) => setUserText(target.value)}
-          className="width-full flex-1 rounded-full p-3"
+          className="width-full flex-1 rounded-md p-2"
           disabled={createMemoryNode.isPending}
         />
         <button
           type="submit"
-          className="w-25 rounded-full p-2"
-          disabled={
-            isFetching || createMemoryNode.isPending || userText?.length < 1
-          }
+          className="cursor-pointer rounded-sm bg-black p-3 text-zinc-200 dark:bg-zinc-100 dark:text-zinc-950"
+          disabled={isFetching || createMemoryNode.isPending}
         >
           {isFetching || createMemoryNode.isPending ? (
-            <Loader aria-hidden="true" className="mx-auto animate-spin" />
+            <Loader
+              aria-hidden="true"
+              size={20}
+              className="mx-auto animate-spin"
+            />
           ) : mode.includes(Mode.Search) ? (
-            <Search aria-hidden="true" className="mx-auto" />
+            <Search aria-hidden="true" size={20} className="mx-auto" />
           ) : (
-            <Send aria-hidden="true" className="mx-auto" />
+            <Send aria-hidden="true" size={20} className="mx-auto" />
           )}
           <span className="sr-only">
             {isFetching || createMemoryNode.isPending
