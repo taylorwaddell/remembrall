@@ -12,8 +12,8 @@
 }
 
 @layer base {
-  :focus:not(.exempt--global_focus_styles),
-  :focus-visible(.exempt--global_focus_styles) {
+  :focus,
+  :focus-visible {
     outline-color: #75a5ff;
     outline-style: solid;
     outline-width: 2px;
