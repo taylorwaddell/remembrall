@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    var(--font-funnel-display), ui-sans-serif, system-ui, sans-serif, arial,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Root for baseui*/
+.root {
+  isolation: isolate;
+}
+
+@layer base {
+  :focus,
+  :focus-visible {
+    outline-color: #75a5ff;
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 1px;
+    box-shadow: none;
+  }
+}
+
+.contents {
+  display: contents;
+}
+
+button:active:not(.sans-scale),
+.btn:active {
+  scale: 0.97;
+  transition: scale 0.15s ease-in-out;
+}
