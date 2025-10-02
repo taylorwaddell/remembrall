@@ -32,6 +32,20 @@ export default async function AvatarDropdown() {
     }
   };
 
+  const userInfo = () => {
+    const user = session?.user;
+    return Boolean(user) ? (
+      <Menu.Item className="rounded-md px-3 pt-1 pb-3 text-right">
+        <p>{user?.name}</p>
+        <small className="text-zinc-500 dark:text-zinc-400">
+          {user?.email}
+        </small>
+      </Menu.Item>
+    ) : (
+      <></>
+    );
+  };
+
   return (
     <Menu.Root>
       <Menu.Trigger className="h-fit w-fit cursor-pointer">
@@ -39,9 +53,15 @@ export default async function AvatarDropdown() {
       </Menu.Trigger>
       <Menu.Portal>
         <Menu.Positioner sideOffset={8}>
-          <Menu.Popup className="rounded-sm px-2 py-2">
-            <Menu.Item className="rounded-md px-6 py-1">
-              <Link href={"/api/auth/signout"}>{"Sign out"}</Link>
+          <Menu.Popup className="rounded-md bg-zinc-100 p-2 dark:bg-zinc-700">
+            {userInfo()}
+            <Menu.Item className="flex">
+              <Link
+                className="btn flex-1 rounded-md bg-zinc-950 py-1 text-center text-white dark:bg-zinc-100 dark:text-black"
+                href={"/api/auth/signout"}
+              >
+                {"Sign out"}
+              </Link>
             </Menu.Item>
           </Menu.Popup>
         </Menu.Positioner>
