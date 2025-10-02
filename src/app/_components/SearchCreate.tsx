@@ -124,7 +124,7 @@ export default function SearchCreate() {
           )}
         </small>
       </div>
-      <div className="flex h-fit w-full rounded-md bg-zinc-100 p-2 dark:bg-zinc-700 dark:text-zinc-200">
+      <div className="flex h-fit w-full gap-1 rounded-md bg-zinc-100 p-2 dark:bg-zinc-700 dark:text-zinc-200">
         <Input
           ref={searchRef}
           placeholder={mode.includes(Mode.Search) ? "Search" : "Create"}
@@ -135,17 +135,19 @@ export default function SearchCreate() {
         />
         <button
           type="submit"
-          className="cursor-pointer rounded-sm p-2"
-          disabled={
-            isFetching || createMemoryNode.isPending || userText?.length < 1
-          }
+          className="cursor-pointer rounded-sm bg-black p-3 text-zinc-200 dark:bg-zinc-100 dark:text-zinc-950"
+          disabled={isFetching || createMemoryNode.isPending}
         >
           {isFetching || createMemoryNode.isPending ? (
-            <Loader aria-hidden="true" className="mx-auto animate-spin" />
+            <Loader
+              aria-hidden="true"
+              size={20}
+              className="mx-auto animate-spin"
+            />
           ) : mode.includes(Mode.Search) ? (
-            <Search aria-hidden="true" className="mx-auto" />
+            <Search aria-hidden="true" size={20} className="mx-auto" />
           ) : (
-            <Send aria-hidden="true" className="mx-auto" />
+            <Send aria-hidden="true" size={20} className="mx-auto" />
           )}
           <span className="sr-only">
             {isFetching || createMemoryNode.isPending

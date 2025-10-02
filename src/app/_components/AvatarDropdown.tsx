@@ -13,8 +13,8 @@ export default async function AvatarDropdown() {
       const firstLetter = user.name ? user.name[0] : "";
       if (user.image) {
         return (
-          <Avatar.Root className="block h-10 w-10">
-            <Avatar.Image src={user.image} className="rounded-full" />
+          <Avatar.Root className="block h-10 w-10 rounded-full">
+            <Avatar.Image src={user.image} className="w-fit rounded-full" />
             <Avatar.Fallback className={fallbackClasses}>
               {firstLetter}
             </Avatar.Fallback>
@@ -48,21 +48,21 @@ export default async function AvatarDropdown() {
 
   return (
     <Menu.Root>
-      <Menu.Trigger className="h-fit w-fit cursor-pointer">
-        {userImage()}
-      </Menu.Trigger>
+      <Menu.Trigger render={userImage()} />
       <Menu.Portal>
         <Menu.Positioner sideOffset={8}>
           <Menu.Popup className="rounded-md bg-zinc-100 p-2 dark:bg-zinc-700">
             {userInfo()}
-            <Menu.Item className="flex">
-              <Link
-                className="btn flex-1 rounded-md bg-zinc-950 py-1 text-center text-white dark:bg-zinc-100 dark:text-black"
-                href={"/api/auth/signout"}
-              >
-                {"Sign out"}
-              </Link>
-            </Menu.Item>
+            <Menu.Item
+              render={
+                <Link
+                  className="btn block rounded-md bg-zinc-950 py-1 text-center text-zinc-100 dark:bg-zinc-100 dark:text-zinc-950"
+                  href="/api/auth/signout"
+                >
+                  Sign out
+                </Link>
+              }
+            />
           </Menu.Popup>
         </Menu.Positioner>
       </Menu.Portal>

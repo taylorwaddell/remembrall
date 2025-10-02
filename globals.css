@@ -12,11 +12,13 @@
 }
 
 @layer base {
-  :focus-visible {
-    outline-color: #87adf4;
-    outline-style: auto;
-    outline-width: 5px;
-    outline-offset: -2px;
+  :focus:not(.exempt--global_focus_styles),
+  :focus-visible(.exempt--global_focus_styles) {
+    outline-color: #75a5ff;
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 1px;
+    box-shadow: none;
   }
 }
 
@@ -24,14 +26,8 @@
   display: contents;
 }
 
-button {
-  border: 0px !important;
-  transition: all 0.15s ease;
-}
-
-button:active:not(.sans-scale) {
-  scale: 0.97;
-}
+button:active:not(.sans-scale),
 .btn:active {
   scale: 0.97;
+  transition: scale 0.15s ease-in-out;
 }
