@@ -27,6 +27,17 @@ export default function SearchCreate() {
     },
     [searchRef],
   );
+  useHotkeys(
+    "Escape",
+    (e) => {
+      e.preventDefault();
+      searchRef.current?.blur();
+      setUserText("");
+      setNodes([]);
+    },
+    { enableOnFormTags: true },
+    [nodes],
+  );
   const memoryNodeCount = api.memoryNode.getMemoryNodeCountByUserId.useQuery();
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
     onSuccess: (result) => {
@@ -116,7 +127,7 @@ export default function SearchCreate() {
       <div className="flex h-fit w-full rounded-md bg-zinc-100 p-2 dark:bg-zinc-700 dark:text-zinc-200">
         <Input
           ref={searchRef}
-          placeholder="Search"
+          placeholder={mode.includes(Mode.Search) ? "Search" : "Create"}
           value={userText}
           onChange={({ target }) => setUserText(target.value)}
           className="width-full flex-1 rounded-md p-2"
