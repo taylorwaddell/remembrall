@@ -60,7 +60,7 @@ export default function SearchCreate() {
     );
   const handleSubmission = async (e: FormEvent) => {
     e.preventDefault();
-    if (isFetching || createMemoryNode.isPending) return;
+    if (isFetching || createMemoryNode.isPending || !userText.length) return;
     if (mode.includes(Mode.Create)) {
       createMemoryNode.mutate({ userText });
     } else {
