@@ -24,7 +24,7 @@ export default async function Home() {
           <h1 className="mb-4 text-3xl">Remembrall</h1>
           <Link
             href={"/api/auth/signin"}
-            className="btn rounded-md bg-zinc-100 px-10 py-2 font-semibold no-underline transition"
+            className="btn rounded-md bg-zinc-950 px-10 py-2 font-semibold text-zinc-100 no-underline transition dark:bg-zinc-100 dark:text-zinc-950"
             autoFocus
           >
             {"Sign in"}
