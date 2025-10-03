@@ -18,10 +18,12 @@ export default function MemoryNode({
   className,
   refreshData,
 }: MemoryNodeProps) {
+  const invalidateMemory = useInvalidateMemory();
   const deleteMemoryNode = api.memoryNode.deleteMemoryNodeById.useMutation({
     onSuccess: async (result) => {
       if (result.ok) {
         toast.success(`Memory deleted`, { description: result.value });
+        await invalidateMemory();
         await refreshData();
       } else {
         toast.error(`Failed to delete memory`, {
@@ -31,11 +33,9 @@ export default function MemoryNode({
     },
   });
 
-  const invalidateMemory = useInvalidateMemory();
   const handleDeletion = async () => {
     if (deleteMemoryNode.isPending) return;
     deleteMemoryNode.mutate({ memoryNodeId: memoryNode.id });
-    await invalidateMemory();
   };
 
   return (
