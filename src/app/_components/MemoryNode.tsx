@@ -5,6 +5,7 @@ import { Loader, Trash } from "lucide-react";
 import { LinkItUrl } from "react-linkify-it";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
+import { useInvalidateMemory } from "~/utilities/memoryNodeMutation";
 
 interface MemoryNodeProps {
   memoryNode: MemoryNode;
@@ -17,10 +18,12 @@ export default function MemoryNode({
   className,
   refreshData,
 }: MemoryNodeProps) {
+  const invalidateMemory = useInvalidateMemory();
   const deleteMemoryNode = api.memoryNode.deleteMemoryNodeById.useMutation({
     onSuccess: async (result) => {
       if (result.ok) {
         toast.success(`Memory deleted`, { description: result.value });
+        await invalidateMemory();
         await refreshData();
       } else {
         toast.error(`Failed to delete memory`, {

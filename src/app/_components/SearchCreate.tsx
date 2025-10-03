@@ -11,6 +11,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import MemoryNode from "./MemoryNode";
 import type { MemoryNode as MemoryNodeType } from "@prisma/client";
+import { useInvalidateMemory } from "~/utilities/memoryNodeMutation";
 
 export default function SearchCreate() {
   const [userText, setUserText] = useState("");
@@ -39,11 +40,13 @@ export default function SearchCreate() {
     [nodes],
   );
   const memoryNodeCount = api.memoryNode.getMemoryNodeCountByUserId.useQuery();
+  const invalidateMemory = useInvalidateMemory();
   const createMemoryNode = api.memoryNode.createMemoryNode.useMutation({
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       if (result.ok) {
         toast.success(`Memory created`, { description: result.value.text });
         setUserText("");
+        await invalidateMemory();
       } else {
         toast.error(`Failed to create memory`, {
           description: result.error.message,
