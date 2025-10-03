@@ -34,7 +34,7 @@ export const memoryNodeRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }): Promise<Result<MemoryNode, AppError>> => {
       const aiResponse = await openai.responses.parse({
-        model: "chatgpt-4o-latest",
+        model: "gpt-5-nano-2025-08-07",
         input: [
           {
             role: "system",
